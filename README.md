@@ -13,13 +13,13 @@ Alternative logging through [zap](https://github.com/uber-go/zap). Thanks for [P
 Download and install it:
 
 ```sh
-$ go get github.com/gin-contrib/zap
+$ go get github.com/bijenkins/zap
 ```
 
 Import it in your code:
 
 ```go
-import "github.com/gin-contrib/zap"
+import "github.com/bijenkins/zap"
 ```
 
 ## Example

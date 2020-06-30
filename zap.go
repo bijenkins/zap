@@ -52,6 +52,7 @@ func Ginzap(logger *zap.Logger, timeFormat string, utc bool) gin.HandlerFunc {
 				zap.String("user-agent", c.Request.UserAgent()),
 				zap.String("time", end.Format(timeFormat)),
 				zap.Duration("latency", latency),
+				zap.Int64("content-length", c.Request.ContentLength),
 			)
 		}
 	}
