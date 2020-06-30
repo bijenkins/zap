@@ -1,4 +1,4 @@
-module github.com/bijenkins/zap
+module github.com/gin-contrib/zap
 
 require (
 	github.com/gin-gonic/gin v1.6.3
