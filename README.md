@@ -34,15 +34,30 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gin-contrib/zap"
+	// "github.com/davecgh/go-spew/spew"
+	ginzap "github.com/bijenkins/zap"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
+type User struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 func main() {
 	r := gin.New()
 
-	logger, _ := zap.NewProduction()
+	//logger, _ := zap.NewProduction()
+	config := zap.NewProductionConfig()
+
+	config.OutputPaths = []string{
+		"/tmp/zaptest.log",
+	}
+	logger, _ := config.Build()
+
+	defer logger.Sync()
+	//spew.Dump(config)
 
 	// Add a ginzap middleware, which:
 	//   - Logs all requests, like a combined access and error log.
@@ -57,6 +72,22 @@ func main() {
 	// Example ping request.
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong "+fmt.Sprint(time.Now().Unix()))
+	})
+
+	// Example ping request.
+	r.POST("/ping", func(c *gin.Context) {
+
+		user := User{}
+		err := c.ShouldBindJSON(&user)
+		if err != nil {
+			//logger.Info(err.Error())
+			c.JSON(400, err.Error())
+			//panic(err.Error())
+			return
+		}
+
+		// c.String(200, "pong "+fmt.Sprint(time.Now().Unix()))
+		c.JSON(200, gin.H{"data": user})
 	})
 
 	// Example when panic happen.
